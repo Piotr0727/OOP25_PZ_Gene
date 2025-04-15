@@ -7,7 +7,7 @@ public class Family {
         String newKey = peopleToAdd.getFirst_name()+ " " + peopleToAdd.getLast_name();
         if (people.containsKey(newKey))
             return;
-        people.put(newKey,personToAdd);
+        people.put(newKey,peopleToAdd);
     }
     public void addPeople(Person... peopleToAdd){
         for(Person p : peopleToAdd)
