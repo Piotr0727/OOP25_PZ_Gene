@@ -1,4 +1,9 @@
 import java.util.AbstractList;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class CustomList<T> extends AbstractList<T>{
     private Node<T> head;
@@ -90,12 +95,39 @@ public class CustomList<T> extends AbstractList<T>{
         addLast(value);
         return size > prevSize;
     }
+
+    public Stream<T> stream(){
+        CustomListIterator CLI = new CustomListIterator();
+        Spliterator<T> Spliterator = Spliterators.spliteratorUnknownSize(CLI, 0);
+        return StreamSupport.stream(Spliterator,false);
+    }
+
     private static class Node<T>{
         T value;
         Node<T> next;
         Node(T value){
             this.value = value;
             this.next = null;
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new CustomListIterator();
+    }
+
+    private class CustomListIterator implements Iterator<T> {
+        private Node<T> current = (Node<T>) head;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+        @Override
+        public T next() {
+            Node<T> temp = current;
+            current = current.next;
+            return temp.value;
         }
     }
 }
